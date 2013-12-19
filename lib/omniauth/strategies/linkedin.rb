@@ -25,7 +25,7 @@ module OmniAuth
       uid { raw_info['id'] }
 
       info do
-        prune! {
+        {
           :name => user_name,
           :email => raw_info['emailAddress'],
           :nickname => user_name,
@@ -41,9 +41,7 @@ module OmniAuth
       end
 
       extra do
-        hash = {}
-        hash['raw_info'] = raw_info unless skip_info?
-        prune! hash
+        { 'raw_info' => raw_info }
       end
 
       alias :oauth2_access_token :access_token
@@ -58,7 +56,7 @@ module OmniAuth
       end
 
       def raw_info
-        @raw_info ||= access_token.get("/v1/people/~:(#{options.fields.join(',')})?format=json").parsed || {}
+        @raw_info ||= access_token.get("/v1/people/~:(#{options.fields.join(',')})?format=json").parsed
       end
 
       def build_access_token
@@ -125,13 +123,6 @@ module OmniAuth
       def user_name
         name = "#{raw_info['firstName']} #{raw_info['lastName']}".strip
         name.empty? ? nil : name
-      end
-
-      def prune!(hash)
-        hash.delete_if do |_, value|
-          prune!(value) if value.is_a?(Hash)
-          value.nil? || (value.respond_to?(:empty?) && value.empty?)
-        end
       end
     end
   end
