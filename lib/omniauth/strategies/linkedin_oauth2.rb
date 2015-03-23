@@ -2,7 +2,7 @@ require 'omniauth-oauth2'
 
 module OmniAuth
   module Strategies
-    class LinkedIn < OmniAuth::Strategies::OAuth2
+    class LinkedInOAuth2 < OmniAuth::Strategies::OAuth2
       # Give your strategy a name.
       option :name, 'linkedin'
 
@@ -75,4 +75,4 @@ module OmniAuth
   end
 end
 
-OmniAuth.config.add_camelization 'linkedin', 'LinkedIn'
+OmniAuth.config.add_camelization 'linkedin_oauth2', 'LinkedInOAuth2'
