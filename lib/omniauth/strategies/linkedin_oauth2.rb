@@ -4,7 +4,7 @@ module OmniAuth
   module Strategies
     class LinkedInOAuth2 < OmniAuth::Strategies::OAuth2
       # Give your strategy a name.
-      option :name, 'linkedin'
+      option :name, 'linkedin_oauth2'
 
       # This is where you pass the options you would pass when
       # initializing your consumer from the OAuth gem.
