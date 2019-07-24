@@ -10,8 +10,8 @@ module OmniAuth
       # initializing your consumer from the OAuth gem.
       option :client_options, {
         :site => 'https://api.linkedin.com',
-        :authorize_url => 'https://www.linkedin.com/uas/oauth2/authorization?response_type=code',
-        :token_url => 'https://www.linkedin.com/uas/oauth2/accessToken'
+        :authorize_url => 'https://www.linkedin.com/oauth/v2/authorization?response_type=code',
+        :token_url => 'https://www.linkedin.com/oauth/v2/accessToken'
       }
 
       option :scope, 'r_basicprofile r_emailaddress'
@@ -54,9 +54,9 @@ module OmniAuth
           :expires_at => oauth2_access_token.expires_at
         })
       end
-
+      
       def raw_info
-        @raw_info ||= access_token.get("/v1/people/~:(#{option_fields.join(',')})?format=json").parsed
+        @raw_info ||= access_token.get(profile_endpoint).parsed
       end
 
       private
@@ -70,6 +70,10 @@ module OmniAuth
       def user_name
         name = "#{raw_info['firstName']} #{raw_info['lastName']}".strip
         name.empty? ? nil : name
+      end
+      
+      def profile_endpoint
+        "/v2/me?projection=(#{ fields.join(',') })"
       end
     end
   end
